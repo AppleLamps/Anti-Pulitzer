@@ -6,10 +6,7 @@ import { headers } from "next/headers";
 import { criteriaItems } from "@/lib/site";
 import { db, schema } from "@/lib/db";
 import { checkNominationRateLimit } from "@/lib/ratelimit";
-import {
-  getAttachmentFiles,
-  uploadNominationAttachments,
-} from "@/lib/uploads";
+import { isValidBlobUrl, MAX_FILES } from "@/lib/uploads";
 import type { GroundsValue } from "@/drizzle/schema";
 
 const validGrounds = new Set(
@@ -107,16 +104,17 @@ export async function submitNomination(
       };
     }
 
-    const attachmentFiles = getAttachmentFiles(formData);
-    let attachmentUrls: string[] = [];
-
-    if (attachmentFiles.length > 0) {
-      const uploadResult = await uploadNominationAttachments(attachmentFiles);
-      if (!uploadResult.ok) {
-        return { ok: false, error: uploadResult.error };
-      }
-      attachmentUrls = uploadResult.urls;
-    }
+    // Files are uploaded directly to Blob by the client; only their URLs
+    // reach this action. Validate they are Blob URLs before persisting.
+    const attachmentUrls = [
+      ...new Set(
+        formData
+          .getAll("attachmentUrls")
+          .filter((value): value is string => typeof value === "string")
+          .map((value) => value.trim())
+          .filter(isValidBlobUrl),
+      ),
+    ].slice(0, MAX_FILES);
 
     await db.insert(schema.nominations).values({
       outlet,

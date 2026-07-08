@@ -1,5 +1,6 @@
 "use client";
 
+import { upload } from "@vercel/blob/client";
 import Link from "next/link";
 import { useState, useTransition } from "react";
 
@@ -35,10 +36,9 @@ export function NominationForm() {
 
     const formData = new FormData(event.currentTarget);
 
+    // Files upload directly to Blob from the browser, bypassing the Server
+    // Action body limit. Only the resulting URLs are sent to the action.
     formData.delete("attachments");
-    for (const file of selectedFiles) {
-      formData.append("attachments", file);
-    }
 
     for (const ground of selectedGrounds) {
       formData.append("groundsClaimed", ground);
@@ -46,6 +46,15 @@ export function NominationForm() {
 
     startTransition(async () => {
       try {
+        for (const file of selectedFiles) {
+          const blob = await upload(`nominations/${file.name}`, file, {
+            access: "public",
+            handleUploadUrl: "/api/nominations/upload",
+            ...(file.type ? { contentType: file.type } : {}),
+          });
+          formData.append("attachmentUrls", blob.url);
+        }
+
         const result = await submitNomination(formData);
 
         if (!result.ok) {
