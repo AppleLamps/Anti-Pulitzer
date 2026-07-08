@@ -15,6 +15,9 @@ export const metadata = createPageMetadata(
   "Submit nominations for reporting that fails the published Anti-Pulitzer criteria.",
 );
 
+/** Check Neon availability on each request, not at static build time. */
+export const dynamic = "force-dynamic";
+
 export default function NominatePage() {
   const isOpen = hasDatabase();
 
