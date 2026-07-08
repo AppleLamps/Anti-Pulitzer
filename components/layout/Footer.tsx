@@ -8,10 +8,10 @@ export function Footer() {
 
   return (
     <footer className="mt-auto border-t border-gold/25 bg-card/25">
-      <div className="content-container py-12">
+      <div className="content-container py-7">
         {/* Colophon folio */}
         <div className="masthead-rule" />
-        <div className="folio-bar py-3">
+        <div className="folio-bar py-2">
           <span>{siteName}</span>
           <span className="hidden sm:inline">
             {masthead.volume} · {masthead.edition}
@@ -20,8 +20,8 @@ export function Footer() {
         </div>
         <div className="masthead-rule" />
 
-        <div className="mt-9 grid gap-10 md:grid-cols-[1.6fr_1fr] md:gap-16">
-          <div className="space-y-4">
+        <div className="mt-6 grid gap-8 md:grid-cols-[1.6fr_1fr] md:gap-16">
+          <div className="space-y-3">
             <Link
               href="/"
               className="inline-flex items-center gap-3 rounded-sm transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-gold"
@@ -36,7 +36,7 @@ export function Footer() {
 
           <nav aria-label="Footer">
             <p className="kicker">Sections</p>
-            <div className="mt-4 flex flex-col gap-2.5">
+            <div className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2">
               {navLinks.map((link) => (
                 <Link
                   key={link.href}
@@ -50,7 +50,7 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="editorial-rule my-8 opacity-50" />
+        <div className="editorial-rule my-5 opacity-50" />
 
         <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <p className="font-mono text-[0.68rem] tracking-wide text-muted-foreground">

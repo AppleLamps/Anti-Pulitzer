@@ -46,17 +46,18 @@ export function Seal({ className, label = sealText }: SealProps) {
         </text>
       </g>
 
-      {/* Fixed center mark: the inverted broken star. */}
+      {/* Fixed center mark: a regular five-point star on the broken base,
+          geometrically centred on the seal's midpoint (100,100). */}
       <g
-        transform="translate(62.4 60.4) scale(1.57)"
         stroke="currentColor"
         fill="none"
         strokeLinejoin="round"
         strokeLinecap="round"
+        strokeWidth="1.6"
       >
-        <path d="M24 4L28 14H38L30 20L33 30L24 24L15 30L18 20L10 14H20L24 4Z" strokeWidth="1.1" />
-        <path d="M14 36H34" strokeWidth="1.1" />
-        <path d="M16 40H32" strokeWidth="1.1" strokeOpacity="0.6" />
+        <path d="M100 68 L106.8 85.7 L125.7 86.7 L110.9 98.6 L115.9 116.8 L100 106.5 L84.1 116.8 L89.1 98.6 L74.3 86.7 L93.2 85.7 Z" />
+        <path d="M84 125 H116" />
+        <path d="M88.5 130 H111.5" strokeOpacity="0.55" />
       </g>
     </svg>
   );
