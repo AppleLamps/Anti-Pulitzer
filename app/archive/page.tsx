@@ -2,8 +2,8 @@ import Link from "next/link";
 
 import { GroundsTag } from "@/components/ui/GroundsTag";
 import { PageHeader } from "@/components/ui/PageHeader";
+import { getPublishedWinners } from "@/lib/data/winners";
 import {
-  archiveEntries,
   archiveGroundsNote,
   createPageMetadata,
   criteriaItems,
@@ -15,9 +15,13 @@ export const metadata = createPageMetadata(
   "Browse Anti-Pulitzer recipients once announcements begin.",
 );
 
+/** Fetch published winners from Neon on each request. */
+export const dynamic = "force-dynamic";
+
 const ledgerColumns = ["No.", "Outlet / Work", "Date", "Grounds"];
 
-export default function ArchivePage() {
+export default async function ArchivePage() {
+  const archiveEntries = await getPublishedWinners();
   const record = emptyStates.archive;
 
   return (

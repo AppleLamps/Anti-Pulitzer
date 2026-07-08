@@ -6,29 +6,24 @@ Where the Pulitzer honors excellence in reporting, the Anti-Pulitzer names and d
 
 ## What this website is
 
-The Anti-Pulitzer website is a marketing and information scaffold for a future award program. It explains the mission, publishes draft evaluation criteria, and reserves space for nominations and winners once those processes go live.
+The Anti-Pulitzer website explains the mission, publishes evaluation criteria, accepts public nominations, and maintains an archive of announced recipients.
 
-**Current status (v1):** placeholder content only. No winners, no nomination form, no backend.
+**Current status (v2):** nominations are open; admin review and archive publication are live. No public winner detail pages yet.
 
 | Page | Route | Purpose |
 |------|-------|---------|
-| Home | `/` | Hero, mission pillars, planned process overview |
+| Home | `/` | Hero, mission pillars, process overview |
 | About | `/about` | Mission statement; what the project is and is not |
-| Criteria | `/criteria` | Draft categories for evaluating bad journalism |
-| Nominate | `/nominate` | "Nominations Opening Soon" placeholder |
-| Archive | `/archive` | Empty state until first recipients are announced |
+| Criteria | `/criteria` | Four grounds for censure |
+| Nominate | `/nominate` | Public nomination form with file uploads |
+| Archive | `/archive` | Published recipients ledger (reads from Neon) |
+| Admin | `/admin` | Panel review queue (password-protected, not in nav) |
 
-### Mission pillars
+### Process
 
-1. **Transparency** ... name the work, the outlet, and the failure
-2. **Accountability** ... journalism that shields power while attacking the vulnerable deserves to be remembered
-3. **Public Harm** ... focus on reporting that damages truth, victims, or democratic discourse
-
-### Planned process (not yet live)
-
-1. **Nominate** ... public submissions of failing reporting
-2. **Review** ... independent panel evaluates against published criteria
-3. **Announce** ... recipients named with documented reasoning and sources
+1. **Nominate** ... public submits failing reporting with evidence (open)
+2. **Review** ... panel reviews pending nominations at `/admin`
+3. **Announce** ... approved entries are published to `/archive` with documented reasoning
 
 ### What it is / is not
 
@@ -55,9 +50,11 @@ Footer disclaimer on all pages: *Opinion and criticism; not legal findings.*
 | Bundler | Turbopack (default) |
 | Styling | Tailwind CSS v4 + CSS variables |
 | Components | shadcn/ui (Radix base) |
-| Fonts | Fraunces (headlines) + Inter (body) via `next/font/google` |
-
-No database, auth, CMS, or API routes in v1.
+| Fonts | Fraunces (headings), Newsreader (body), IBM Plex Mono (labels) |
+| Database | Neon Postgres via Drizzle ORM |
+| Rate limiting | Upstash Redis |
+| File uploads | Vercel Blob |
+| Admin auth | Cookie session via `ADMIN_PASSWORD` |
 
 ## Getting started
 
@@ -65,52 +62,74 @@ No database, auth, CMS, or API routes in v1.
 
 ```bash
 npm install
+cp .env.example .env   # then fill in values
+npm run db:push        # sync schema to Neon
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+### Environment variables
+
+Copy [`.env.example`](.env.example) to `.env` and configure:
+
+| Variable | Purpose |
+|----------|---------|
+| `DATABASE_URL` | Neon Postgres connection string |
+| `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` | Rate limiting (Vercel may use a project prefix) |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob for nomination attachments |
+| `ADMIN_PASSWORD` | Panel login for `/admin` |
+
+On Vercel, connect the Neon, Upstash, and Blob integrations to the project so env vars are injected automatically. Add `ADMIN_PASSWORD` manually in project settings.
 
 ### Scripts
 
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Start Turbopack dev server |
-| `npm run build` | Production build (static pages) |
+| `npm run build` | Production build |
 | `npm run start` | Serve production build |
 | `npm run lint` | Run ESLint (separate from build in Next.js 16) |
+| `npm run db:push` | Push Drizzle schema to Neon |
+| `npm run db:generate` | Generate migration files |
+| `npm run db:studio` | Open Drizzle Studio |
 
 ## Project structure
 
 ```
 anti-Pulitzer/
-├── app/                    # Next.js App Router pages
-│   ├── layout.tsx          # Root layout, fonts, metadata, Header/Footer
-│   ├── page.tsx            # Home
-│   ├── about/page.tsx
-│   ├── criteria/page.tsx
-│   ├── nominate/page.tsx
-│   └── archive/page.tsx
+├── app/
+│   ├── actions/            # Server Actions (nominations, admin)
+│   ├── admin/              # Panel review + login
+│   ├── archive/page.tsx    # Public ledger (dynamic, reads Neon)
+│   ├── nominate/page.tsx   # Nomination form
+│   └── ...
 ├── components/
+│   ├── admin/              # AdminLoginForm, NominationReviewList
+│   ├── nominate/           # NominationForm, AttachmentPicker
+│   ├── home/               # Hero, Pillars, HowItWorks, Closing
 │   ├── layout/             # Header (client), Footer
-│   ├── home/               # Hero, Pillars, HowItWorks
-│   └── ui/                 # shadcn primitives + SectionHeading, EmptyState
+│   └── ui/                 # shadcn + PageHeader, Seal, GroundsTag, etc.
+├── drizzle/
+│   └── schema.ts           # nominations + winners tables
 ├── lib/
-│   └── site.ts             # All site copy, nav links, metadata helpers
-└── public/
-    └── logo.svg            # Site mark
+│   ├── site.ts             # All marketing copy
+│   ├── db.ts               # Neon client
+│   ├── data/               # winners + nominations queries
+│   └── ...
+└── public/logo.svg
 ```
 
 ## Content and copy
 
 **Single source of truth:** [`lib/site.ts`](lib/site.ts)
 
-All user-facing text (headlines, descriptions, nav labels, empty states, criteria) lives in `lib/site.ts`. Pages and components import from there; do not hardcode marketing copy in components.
+All user-facing text lives in `lib/site.ts`. Pages and components import from there.
 
 **Style rules:**
 
 - Use ellipses (`...`) instead of em dashes in body copy
 - Tone: formal, editorial, institutional... not snarky or meme-like
-- Do not name specific stories, outlets, or people in placeholder copy unless adding real archive entries
 
 ## Design system
 
@@ -119,15 +138,18 @@ Defined in [`app/globals.css`](app/globals.css):
 - **Background:** `#0f0f0f` (near-black charcoal)
 - **Foreground:** `#f5f0e8` (warm off-white)
 - **Accent:** `#c9a84c` (muted gold)
-- **Layout:** `content-container` utility (max-width ~72rem), `editorial-rule` gold dividers
+- **Layout:** `content-container`, `editorial-rule`, `masthead-rule`, `kicker`, `dateline`
 
-## What's out of scope (v1)
+## Deployment
 
-- Winner entries or archive data
-- Nomination forms or email capture
-- CMS, database, API routes
-- Analytics, newsletter, authentication
-- Vercel deployment config (can be added later)
+Designed for **Vercel**:
+
+1. Connect Neon, Upstash Redis, and Blob storage integrations
+2. Set `ADMIN_PASSWORD` in project env vars
+3. Run `npm run db:push` against production Neon (or let first deploy use existing schema)
+4. Deploy; `/archive` and `/admin` are dynamic routes
+
+Server Actions accept up to **52 MB** payloads (configured in `next.config.ts`) to support file attachments.
 
 ## Documentation for agents
 

@@ -87,6 +87,9 @@
   --sidebar-accent-foreground: #c9a84c;
   --sidebar-border: #2a2a2a;
   --sidebar-ring: #c9a84c;
+  --scrollbar-track: #161616;
+  --scrollbar-thumb: #3d382f;
+  --scrollbar-thumb-hover: #c9a84c;
 }
 
 @layer base {
@@ -115,6 +118,43 @@
   ::selection {
     background: color-mix(in oklch, var(--gold) 82%, transparent);
     color: var(--primary-foreground);
+  }
+
+  /* Editorial scrollbars: dark track, muted gold thumb. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  }
+
+  *::-webkit-scrollbar {
+    width: 0.65rem;
+    height: 0.65rem;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+    border-left: 1px solid color-mix(in oklch, var(--gold) 12%, transparent);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb);
+    border: 2px solid var(--scrollbar-track);
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: var(--scrollbar-track);
+  }
+
+  textarea::-webkit-scrollbar-track,
+  .overflow-auto::-webkit-scrollbar-track,
+  .overflow-y-auto::-webkit-scrollbar-track,
+  .overflow-x-auto::-webkit-scrollbar-track {
+    background: color-mix(in oklch, var(--background) 88%, var(--gold) 12%);
   }
 }
 

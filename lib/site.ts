@@ -23,7 +23,7 @@ export const masthead = {
 } as const;
 
 export const hero = {
-  status: "Nominations open soon ... first recipients announced thereafter.",
+  status: "Nominations are open. Submissions are reviewed against the published criteria.",
   eyebrow: "Est. 2026 · A public record of journalistic failure",
   title: siteName,
   tagline,
@@ -68,7 +68,7 @@ export const howItWorks = [
     title: "Nominate",
     description:
       "The public submits examples of reporting that failed basic standards of accuracy, fairness, or integrity.",
-    status: "Forthcoming",
+    status: "Open",
   },
   {
     step: "02",
@@ -173,12 +173,46 @@ export const archiveEntries: ArchiveEntry[] = [];
 export const archiveGroundsNote =
   "Every entry is filed under one or more of the four grounds. The category records why the work was censured, and each traces back to the standard it failed.";
 
+export const nominateContent = {
+  label: "Nominations",
+  status: "Open",
+  title: "Submit a failure",
+  standfirst:
+    "Nominate reporting that meets one or more published grounds. Include the original work, supporting evidence, and a clear account of the harm.",
+  intro:
+    "Every submission is reviewed by the panel before any entry is published. Provide documented evidence and public source material... not opinion alone.",
+  evidenceNote:
+    "Include links to the original reporting and any corroborating material. You may also upload screenshots, photos, or documents. Submissions without a verifiable source URL will not be reviewed.",
+  groundsLabel: "Grounds claimed",
+  groundsHelp: "Select every category the work appears to violate.",
+  fields: {
+    outlet: "Outlet or publication",
+    workUrl: "URL to the original work",
+    workTitle: "Headline or title (optional)",
+    evidenceUrls: "Additional evidence URLs (optional, one per line)",
+    attachments: "Upload files or photos (optional)",
+    narrative: "Supporting narrative",
+    submitterEmail: "Your email (optional, for follow-up only)",
+  },
+  attachmentsHelp:
+    "Up to 5 files. Images, PDF, or plain text. 10 MB per file.",
+  narrativeHelp: "Minimum 100 characters. State the failure, the evidence, and the public harm.",
+  submit: "Submit nomination",
+  successHeading: "Nomination received",
+  successBody:
+    "Your submission has been recorded and queued for review. Published recipients appear in the archive once announced.",
+  links: [
+    { label: "Review the criteria", href: "/criteria" },
+    { label: "View the archive", href: "/archive" },
+  ],
+} as const;
+
 export const emptyStates = {
   nominate: {
     label: "Nominations",
-    status: "Not yet open",
-    heading: "Nominations Opening Soon",
-    body: "The nomination process is not yet live. Check back for an announcement on when submissions will open.",
+    status: "Unavailable",
+    heading: "Nominations Unavailable",
+    body: "The nomination system is not configured yet. Check back once submissions are enabled.",
     links: [
       { label: "Review the criteria", href: "/criteria" },
       { label: "Read the mission", href: "/about" },
