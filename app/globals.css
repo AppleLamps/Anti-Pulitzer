@@ -7,10 +7,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
+  --font-sans: var(--font-newsreader);
   --font-heading: var(--font-fraunces);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-plex-mono);
   --color-gold: var(--gold);
+  --color-censure: var(--censure);
+  --color-censure-foreground: var(--censure-foreground);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -53,6 +55,8 @@
   --background: #0f0f0f;
   --foreground: #f5f0e8;
   --gold: #c9a84c;
+  --censure: #8b2f2f;
+  --censure-foreground: #f0e0da;
   --card: #161616;
   --card-foreground: #f5f0e8;
   --popover: #161616;
@@ -95,13 +99,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(
-      52rem 34rem at 50% -8rem,
-      color-mix(in oklch, var(--gold) 9%, transparent),
-      transparent 62%
-    );
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    font-feature-settings: "kern", "liga", "onum", "pnum";
   }
   /* Faint film grain for editorial texture, sits above the base fill and
      below all content so type stays crisp. */
@@ -149,6 +147,47 @@
     font-family: var(--font-heading);
     font-variant-numeric: tabular-nums lining-nums;
     letter-spacing: -0.02em;
+  }
+  /* Wire-copy label: mono, small, letter-spaced. The editorial replacement
+     for the old uppercase-sans eyebrow. */
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 500;
+    line-height: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    color: var(--gold);
+  }
+  .dateline {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted-foreground);
+  }
+  /* Folio: the running edition/date strip across the top of the masthead. */
+  .folio-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--muted-foreground);
+  }
+  /* Newspaper lead: raised initial on the standfirst paragraph. */
+  .drop-cap::first-letter {
+    font-family: var(--font-heading);
+    float: left;
+    margin-right: 0.09em;
+    padding-top: 0.02em;
+    font-size: 3.6em;
+    line-height: 0.72;
+    font-weight: 500;
+    color: var(--gold);
   }
 }
 

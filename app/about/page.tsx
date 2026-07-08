@@ -1,6 +1,4 @@
-import { Check, X } from "lucide-react";
-
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { aboutContent, createPageMetadata } from "@/lib/site";
 
 export const metadata = createPageMetadata(
@@ -10,22 +8,23 @@ export const metadata = createPageMetadata(
 
 export default function AboutPage() {
   return (
-    <div className="content-container py-16 md:py-24">
-      <div className="mx-auto max-w-3xl space-y-16">
-        <SectionHeading
-          eyebrow="About"
-          title="The inverse of excellence"
-          description="Where the Pulitzer honors what journalism should be, the Anti-Pulitzer documents what it must not become."
-        />
+    <div className="content-container py-14 md:py-20">
+      <PageHeader
+        kicker="About"
+        title="The inverse of excellence"
+        standfirst="Where the Pulitzer honors what journalism should be, the Anti-Pulitzer documents what it must not become."
+        folio="The mission"
+      />
 
-        <div className="space-y-6 text-muted-foreground">
+      <div className="mt-14 grid gap-12 md:grid-cols-12 md:gap-0">
+        <div className="md:col-span-7 md:pr-12">
           {aboutContent.mission.map((paragraph, index) => (
             <p
               key={paragraph}
               className={
                 index === 0
-                  ? "text-lg leading-relaxed text-foreground/90 md:text-xl"
-                  : "text-base leading-relaxed"
+                  ? "drop-cap text-lg leading-relaxed text-foreground/90 md:text-xl"
+                  : "mt-6 text-base leading-relaxed text-muted-foreground"
               }
             >
               {paragraph}
@@ -33,34 +32,38 @@ export default function AboutPage() {
           ))}
         </div>
 
-        <div className="grid gap-px overflow-hidden rounded-xl border border-border/70 bg-border/70 md:grid-cols-2">
-          <div className="space-y-5 bg-background p-8">
-            <h2 className="font-heading text-lg text-gold">What it is</h2>
-            <ul className="space-y-4">
+        <div className="grid gap-10 md:col-span-5 md:grid-cols-2 md:gap-0 md:border-l md:border-border/70 md:pl-12">
+          <div className="md:pr-6">
+            <p className="kicker">What it is</p>
+            <ul className="mt-5 border-t border-border/70">
               {aboutContent.isList.map((item) => (
-                <li key={item} className="flex gap-3 text-base leading-relaxed">
-                  <Check
-                    className="mt-1 size-4 shrink-0 text-gold"
-                    aria-hidden="true"
-                  />
-                  <span className="text-foreground/90">{item}</span>
+                <li
+                  key={item}
+                  className="flex gap-3 border-b border-border/60 py-4 text-sm leading-relaxed text-foreground/90"
+                >
+                  <span className="mt-0.5 text-gold" aria-hidden="true">
+                    &mdash;
+                  </span>
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
           </div>
 
-          <div className="space-y-5 bg-background p-8">
-            <h2 className="font-heading text-lg text-muted-foreground">
+          <div className="md:border-l md:border-border/70 md:pl-6">
+            <p className="font-mono text-[0.7rem] font-medium uppercase leading-none tracking-[0.26em] text-muted-foreground">
               What it is not
-            </h2>
-            <ul className="space-y-4">
+            </p>
+            <ul className="mt-5 border-t border-border/70">
               {aboutContent.isNotList.map((item) => (
-                <li key={item} className="flex gap-3 text-base leading-relaxed">
-                  <X
-                    className="mt-1 size-4 shrink-0 text-muted-foreground/60"
-                    aria-hidden="true"
-                  />
-                  <span className="text-muted-foreground">{item}</span>
+                <li
+                  key={item}
+                  className="flex gap-3 border-b border-border/60 py-4 text-sm leading-relaxed text-muted-foreground"
+                >
+                  <span className="mt-0.5 text-muted-foreground/50" aria-hidden="true">
+                    &mdash;
+                  </span>
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>

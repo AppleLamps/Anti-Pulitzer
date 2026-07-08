@@ -24,18 +24,25 @@ export function SectionHeading({
       )}
     >
       {eyebrow ? (
-        <p className="text-xs font-medium uppercase tracking-[0.2em] text-gold">
-          {eyebrow}
-        </p>
+        align === "center" ? (
+          <p className="kicker">{eyebrow}</p>
+        ) : (
+          <div className="flex items-center gap-4">
+            <span className="kicker whitespace-nowrap">{eyebrow}</span>
+            <span className="h-px flex-1 bg-gold/30" />
+          </div>
+        )
       ) : null}
       <div className="space-y-3">
         <h2 className="font-heading text-3xl tracking-tight text-foreground md:text-4xl">
           {title}
         </h2>
-        <div className={cn("editorial-rule", align === "center" && "mx-auto")} />
+        {align === "center" ? (
+          <div className="editorial-rule mx-auto max-w-[6rem]" />
+        ) : null}
       </div>
       {description ? (
-        <p className="text-base leading-relaxed text-muted-foreground">
+        <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
           {description}
         </p>
       ) : null}

@@ -3,29 +3,32 @@ import { pillars } from "@/lib/site";
 
 export function Pillars() {
   return (
-    <section className="border-t border-border/70 bg-card/25 py-20 md:py-24">
-      <div className="content-container space-y-14">
+    <section className="border-t border-gold/20 py-20 md:py-24">
+      <div className="content-container space-y-12">
         <SectionHeading
           eyebrow="Mission"
           title="What we stand for"
           description="The Anti-Pulitzer exists to make journalistic failure as visible as journalistic excellence."
         />
 
-        <div className="grid gap-px overflow-hidden rounded-xl border border-border/70 bg-border/70 md:grid-cols-3">
+        <div className="grid md:grid-cols-3">
           {pillars.map((pillar, index) => (
-            <div
+            <article
               key={pillar.title}
-              className="group relative flex flex-col gap-4 bg-background p-8 transition-colors hover:bg-card/70"
+              className="border-t border-border/70 pt-6 first:border-t-0 md:border-t-0 md:border-l md:pt-0 md:pr-6 md:pl-8 md:first:border-l-0 md:first:pl-0"
             >
-              <span className="absolute top-0 left-0 h-px w-0 bg-gold transition-all duration-500 group-hover:w-full" />
-              <span className="index-numeral text-sm text-gold/50">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3 className="font-heading text-xl text-gold">{pillar.title}</h3>
-              <p className="text-base leading-relaxed text-muted-foreground">
+              <div className="flex items-baseline gap-3">
+                <span className="index-numeral text-2xl text-gold/45">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="font-heading text-xl text-foreground">
+                  {pillar.title}
+                </h3>
+              </div>
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
                 {pillar.description}
               </p>
-            </div>
+            </article>
           ))}
         </div>
       </div>

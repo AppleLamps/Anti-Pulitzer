@@ -1,66 +1,92 @@
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { Seal } from "@/components/ui/Seal";
-import { hero } from "@/lib/site";
+import { hero, masthead } from "@/lib/site";
 
 export function Hero() {
   return (
-    <section className="relative overflow-hidden">
-      <div className="content-container pt-14 pb-20 md:pt-20 md:pb-28">
-        {/* Status line */}
-        <div className="flex justify-center">
-          <span className="inline-flex items-center gap-2.5 rounded-full border border-gold/25 bg-card/50 px-4 py-1.5 text-xs tracking-wide text-muted-foreground">
-            <span className="relative flex size-1.5">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-gold/70" />
-              <span className="relative inline-flex size-1.5 rounded-full bg-gold" />
-            </span>
-            {hero.status}
+    <section className="relative">
+      <div className="content-container pt-10 pb-16 md:pt-14 md:pb-24">
+        {/* Grand nameplate */}
+        <div className="masthead-rule" />
+        <div className="dateline flex items-baseline justify-between py-3">
+          <span>
+            {masthead.volume} · {masthead.edition}
           </span>
+          <span className="hidden md:inline">{masthead.established}</span>
         </div>
+        <h1 className="text-center font-heading text-5xl uppercase leading-[0.9] tracking-[-0.01em] text-foreground sm:text-6xl md:text-7xl">
+          {hero.title}
+        </h1>
+        <p className="mt-3 text-center font-heading text-lg italic text-muted-foreground md:text-xl">
+          {hero.tagline}
+        </p>
+        <div className="masthead-rule mt-5" />
 
-        <div className="mx-auto mt-12 flex max-w-3xl flex-col items-center text-center">
-          <Seal className="size-24 md:size-28" />
+        {/* Lead story */}
+        <div className="mt-12 grid gap-10 md:grid-cols-12 md:gap-0">
+          <div className="md:col-span-7 md:pr-10">
+            <p className="kicker">{hero.kicker}</p>
+            <h2 className="mt-4 font-heading text-4xl leading-[1.03] tracking-tight md:text-5xl">
+              <span className="text-muted-foreground">{hero.statement.lead}</span>{" "}
+              <span className="text-foreground">{hero.statement.turn}</span>
+            </h2>
+            <p className="drop-cap mt-7 max-w-prose text-lg leading-relaxed text-muted-foreground">
+              {hero.standfirst}
+            </p>
 
-          <p className="mt-8 text-[0.7rem] font-medium uppercase tracking-[0.28em] text-gold">
-            {hero.eyebrow}
-          </p>
-
-          <h1 className="mt-5 font-heading text-5xl leading-[0.98] tracking-tight text-foreground sm:text-6xl md:text-7xl">
-            {hero.title}
-          </h1>
-
-          <div className="masthead-rule mx-auto mt-8 max-w-sm" />
-
-          <p className="mt-8 font-heading text-xl leading-snug text-muted-foreground md:text-2xl">
-            <em>{hero.tagline}</em>
-          </p>
-
-          {/* The inverse statement */}
-          <p className="mt-10 max-w-xl text-base leading-relaxed md:text-lg">
-            <span className="text-muted-foreground">{hero.statement.lead}</span>{" "}
-            <span className="text-foreground">{hero.statement.turn}</span>
-          </p>
-
-          <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row">
-            <Button
-              asChild
-              size="lg"
-              className="bg-primary text-primary-foreground hover:bg-primary/85"
-            >
-              <Link href={hero.primaryCta.href}>{hero.primaryCta.label}</Link>
-            </Button>
-            <Button
-              asChild
-              size="lg"
-              variant="ghost"
-              className="text-muted-foreground hover:bg-gold/10 hover:text-gold"
-            >
-              <Link href={hero.secondaryCta.href}>
+            <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Link
+                href={hero.primaryCta.href}
+                className="inline-flex items-center gap-2 border border-gold bg-gold/10 px-5 py-2.5 font-mono text-[0.72rem] uppercase tracking-[0.18em] text-gold transition-colors hover:bg-gold hover:text-primary-foreground"
+              >
+                {hero.primaryCta.label} <span aria-hidden="true">&rarr;</span>
+              </Link>
+              <Link
+                href={hero.secondaryCta.href}
+                className="inline-flex items-center gap-2 font-mono text-[0.72rem] uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+              >
                 {hero.secondaryCta.label} <span aria-hidden="true">&rarr;</span>
               </Link>
-            </Button>
+            </div>
           </div>
+
+          <aside className="md:col-span-5 md:border-l md:border-border/70 md:pl-10">
+            <div className="flex flex-col items-center border border-gold/20 bg-card/30 px-6 py-8">
+              <Seal className="size-28" />
+              <p className="dateline mt-5 text-center text-gold/70">
+                {masthead.motto}
+              </p>
+            </div>
+
+            <div className="mt-6 border-t border-border/70 pt-5">
+              <p className="kicker">Notice</p>
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                {hero.status}
+              </p>
+            </div>
+
+            <div className="mt-6 border-t border-border/70 pt-5">
+              <p className="kicker">In this issue</p>
+              <ul className="mt-2 divide-y divide-border/60">
+                {hero.index.map((item) => (
+                  <li key={item.href}>
+                    <Link
+                      href={item.href}
+                      className="group flex items-baseline justify-between gap-4 py-2.5"
+                    >
+                      <span className="font-heading text-base text-foreground transition-colors group-hover:text-gold">
+                        {item.label}
+                      </span>
+                      <span className="shrink-0 text-right text-xs italic text-muted-foreground">
+                        {item.note}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
