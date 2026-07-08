@@ -1,5 +1,9 @@
 import { put } from "@vercel/blob";
 
+import { getBlobReadWriteToken, hasBlobStorage } from "@/lib/env";
+
+export { getBlobReadWriteToken, hasBlobStorage };
+
 const MAX_FILES = 5;
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
 
@@ -20,14 +24,6 @@ function sanitizeFilename(filename: string): string {
     .replace(/[^a-z0-9._-]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 80);
-}
-
-export function getBlobReadWriteToken(): string | undefined {
-  return process.env.BLOB_READ_WRITE_TOKEN;
-}
-
-export function hasBlobStorage(): boolean {
-  return Boolean(getBlobReadWriteToken());
 }
 
 function isFile(value: FormDataEntryValue): value is File {
