@@ -1,36 +1,139 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Anti-Pulitzer
 
-## Getting Started
+A public-facing website for **The Anti-Pulitzer**, an accountability project that highlights journalism failing the public... the inverse of the Pulitzer Prize.
 
-First, run the development server:
+Where the Pulitzer honors excellence in reporting, the Anti-Pulitzer names and documents the worst of the worst: stories, outlets, and practices that betray public trust. The site is a formal institution in tone, not a meme or partisan attack page.
+
+## What this website is
+
+The Anti-Pulitzer website is a marketing and information scaffold for a future award program. It explains the mission, publishes draft evaluation criteria, and reserves space for nominations and winners once those processes go live.
+
+**Current status (v1):** placeholder content only. No winners, no nomination form, no backend.
+
+| Page | Route | Purpose |
+|------|-------|---------|
+| Home | `/` | Hero, mission pillars, planned process overview |
+| About | `/about` | Mission statement; what the project is and is not |
+| Criteria | `/criteria` | Draft categories for evaluating bad journalism |
+| Nominate | `/nominate` | "Nominations Opening Soon" placeholder |
+| Archive | `/archive` | Empty state until first recipients are announced |
+
+### Mission pillars
+
+1. **Transparency** ... name the work, the outlet, and the failure
+2. **Accountability** ... journalism that shields power while attacking the vulnerable deserves to be remembered
+3. **Public Harm** ... focus on reporting that damages truth, victims, or democratic discourse
+
+### Planned process (not yet live)
+
+1. **Nominate** ... public submissions of failing reporting
+2. **Review** ... independent panel evaluates against published criteria
+3. **Announce** ... recipients named with documented reasoning and sources
+
+### What it is / is not
+
+**It is:**
+
+- A cultural accountability project focused on journalistic failure
+- A permanent public record of work that meets published criteria
+- An invitation for outlets to do better... or face lasting reputational consequence
+
+**It is not:**
+
+- A legal adjudication or finding of fact
+- A substitute for courts, regulators, or internal newsroom review
+- A partisan attack on journalism as a profession
+
+Footer disclaimer on all pages: *Opinion and criticism; not legal findings.*
+
+## Tech stack
+
+| Layer | Choice |
+|-------|--------|
+| Framework | Next.js 16.2+ (App Router, TypeScript) |
+| Runtime | React 19 |
+| Bundler | Turbopack (default) |
+| Styling | Tailwind CSS v4 + CSS variables |
+| Components | shadcn/ui (Radix base) |
+| Fonts | Fraunces (headlines) + Inter (body) via `next/font/google` |
+
+No database, auth, CMS, or API routes in v1.
+
+## Getting started
+
+**Requirements:** Node.js 20.9+
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start Turbopack dev server |
+| `npm run build` | Production build (static pages) |
+| `npm run start` | Serve production build |
+| `npm run lint` | Run ESLint (separate from build in Next.js 16) |
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+anti-Pulitzer/
+├── app/                    # Next.js App Router pages
+│   ├── layout.tsx          # Root layout, fonts, metadata, Header/Footer
+│   ├── page.tsx            # Home
+│   ├── about/page.tsx
+│   ├── criteria/page.tsx
+│   ├── nominate/page.tsx
+│   └── archive/page.tsx
+├── components/
+│   ├── layout/             # Header (client), Footer
+│   ├── home/               # Hero, Pillars, HowItWorks
+│   └── ui/                 # shadcn primitives + SectionHeading, EmptyState
+├── lib/
+│   └── site.ts             # All site copy, nav links, metadata helpers
+└── public/
+    └── logo.svg            # Site mark
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Content and copy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Single source of truth:** [`lib/site.ts`](lib/site.ts)
 
-## Deploy on Vercel
+All user-facing text (headlines, descriptions, nav labels, empty states, criteria) lives in `lib/site.ts`. Pages and components import from there; do not hardcode marketing copy in components.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Style rules:**
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Use ellipses (`...`) instead of em dashes in body copy
+- Tone: formal, editorial, institutional... not snarky or meme-like
+- Do not name specific stories, outlets, or people in placeholder copy unless adding real archive entries
+
+## Design system
+
+Defined in [`app/globals.css`](app/globals.css):
+
+- **Background:** `#0f0f0f` (near-black charcoal)
+- **Foreground:** `#f5f0e8` (warm off-white)
+- **Accent:** `#c9a84c` (muted gold)
+- **Layout:** `content-container` utility (max-width ~72rem), `editorial-rule` gold dividers
+
+## What's out of scope (v1)
+
+- Winner entries or archive data
+- Nomination forms or email capture
+- CMS, database, API routes
+- Analytics, newsletter, authentication
+- Vercel deployment config (can be added later)
+
+## Documentation for agents
+
+- [`CLAUDE.md`](CLAUDE.md) ... project context and conventions for Claude / Cursor
+- [`AGENTS.md`](AGENTS.md) ... coding-agent rules including Next.js 16 guidance
+
+## License
+
+Private project. All rights reserved.
