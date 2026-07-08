@@ -1,13 +1,30 @@
 /**
  * Reads integration env vars. Vercel marketplace integrations may use
- * project-prefixed names (e.g. AntiPulitzer_KV_*) or the standard Upstash names.
+ * project-prefixed names (e.g. AntiPulitzer_DATABASE_URL, AntiPulitzer_KV_*).
  */
+
+const DATABASE_URL_KEYS = [
+  "DATABASE_URL",
+  "POSTGRES_URL",
+  "POSTGRES_PRISMA_URL",
+  "AntiPulitzer_DATABASE_URL",
+  "AntiPulitzer_POSTGRES_URL",
+  "AntiPulitzer_POSTGRES_PRISMA_URL",
+  "DATABASE_URL_UNPOOLED",
+  "AntiPulitzer_DATABASE_URL_UNPOOLED",
+  "POSTGRES_URL_NON_POOLING",
+  "AntiPulitzer_POSTGRES_URL_NON_POOLING",
+] as const;
+
 export function getDatabaseUrl(): string | undefined {
-  return (
-    process.env.DATABASE_URL ??
-    process.env.POSTGRES_URL ??
-    process.env.POSTGRES_PRISMA_URL
-  );
+  for (const key of DATABASE_URL_KEYS) {
+    const value = process.env[key];
+    if (value) {
+      return value;
+    }
+  }
+
+  return undefined;
 }
 
 export function getRedisRestConfig(): { url: string; token: string } | null {
